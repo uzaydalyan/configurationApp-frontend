@@ -1,4 +1,5 @@
-export default interface Parameter {
+export default interface ParameterModel {
+    id: string,
     description: string;
     create_date: string;
     value : string;

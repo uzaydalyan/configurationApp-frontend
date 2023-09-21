@@ -1,11 +1,28 @@
+@import "variables";
+
 
 .navbar{
 
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  padding: 0 50px;
+  width: 100%;
   height: 65px;
 
-  .navbar_icon{
-    width: 50px;
+  .navbar_content{
+    display: flex;
+    width: $desktop_width;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+
+    .navbar_icon{
+      width: 50px;
+    }
+
+    .profile{
+      color: white;
+      font-size: 30px;
+    }
   }
 }

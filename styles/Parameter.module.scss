@@ -1,0 +1,93 @@
+@import 'variables';
+
+.parameter {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+
+  .mobile_title{
+    display: none;
+  }
+
+  .text {
+    display: flex;
+    overflow: hidden;
+  }
+
+  .input {
+    height: 40px;
+  }
+
+  .buttons {
+
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+    color: white;
+
+    button {
+      color: white;
+      outline-style: none;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 0;
+      cursor: pointer;
+      width: 90px;
+    }
+
+    .button_blue {
+      background: linear-gradient(45deg, rgba(63, 104, 242, 1) 0%, rgba(67, 134, 242, 1) 100%);
+    }
+
+    .button_red {
+      background: linear-gradient(45deg, rgba(222, 72, 66, 1) 0%, rgba(233, 99, 137, 1) 100%);
+    }
+  }
+}
+
+@media(max-width: $desktop_width) {
+
+  .parameter {
+    .buttons {
+      button {
+        padding: 10px 0;
+        width: 50px;
+      }
+    }
+  }
+}
+
+@media(max-width: $tablet_width) {
+
+  .parameter {
+    grid-template-columns: unset;
+    border: 1px solid $main_text_color;
+    gap: 10px;
+    border-radius: 8px;
+    padding: 5px 10px;
+
+    .text {
+      white-space: pre-wrap;
+      }
+
+    .mobile_title{
+      font-weight: 600;
+      display: block;
+    }
+
+    .input {
+      height: 30px;
+    }
+
+    .buttons {
+
+      justify-self: center;
+
+      button {
+        padding: 5px 10px;
+        width: unset;
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+// Colors
+$main_text_color: #d8d8db;
+$title_text_color: #7d8da3;
+$background_color_first: rgba(29,29,45,1);
+$background_color_second: rgba(30,30,36,1);
+
+
+// Fonts
+$main_font: 'Poppins';
+
+// Page sizes
+$desktop_width: 1400px;
+$laptop_width: 1140px;
+$tablet_width: 704px;
+$mobile_width: 335px;
+
+@mixin title_desktop {
+  font-family: $main_font;
+  color: $title_text_color;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 24px;
+  letter-spacing: -0.025em;
+  margin: 0;
+
+}
+
+@mixin title_mobile {
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+
+@mixin text_desktop {
+  font-family: $main_font;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 0em;
+  color: $main_text_color;
+  margin: 0;
+}
+
+@mixin text_mobile {
+  font-size: 12px;
+  line-height: 15px;
+}

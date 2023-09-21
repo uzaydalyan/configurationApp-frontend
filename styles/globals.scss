@@ -1,6 +1,28 @@
+@import "_variables.scss";
 
-body{
-  background: linear-gradient(180deg, rgba(29,29,45,1) 0%, rgba(30,30,36,1) 100%);
+main{
+  width: 100%;
+}
+
+html{
+  background: linear-gradient(180deg, $background_color_first 0%, $background_color_second 100%);
+}
+
+html body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, $background_color_first 0%, $background_color_second 100%);
+}
+
+.content{
+  margin: 0 auto;
+  margin-top: 70px;
+  display: grid;
+  justify-content: center;
+
+  @media(max-width: $tablet_width){
+    margin-top: 30px;
+  }
 }
 
 a {
@@ -10,4 +32,28 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.main_font{
+  @include text_desktop;
+
+  @media(max-width: $tablet_width) {
+    @include text_mobile;
+  }
+}
+
+.title_font{
+  @include title_desktop;
+
+  @media(max-width: $desktop_width) {
+    @include title_mobile;
+  }
+}
+
+.MuiOutlinedInput-notchedOutline{
+  border-color: $title_text_color;
+}
+
+.MuiInputLabel-root{
+  color: $title_text_color;
 }

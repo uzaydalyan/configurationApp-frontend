@@ -1,0 +1,33 @@
+@import "variables";
+
+.main{
+  display: grid;
+  justify-items: center;
+
+  .signintext{
+    margin-top: 40px !important;
+    margin-bottom: 20px !important;
+    @include title_desktop;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+    color: #303054;
+  }
+
+  .loginInput{
+    width: 250px;
+    height: 40px;
+  }
+
+  .button{
+    background: linear-gradient(45deg, rgba(59,75,178,1) 0%, rgba(102,121,244,1) 100%);
+    color: white;
+    height: 40px;
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 250px;
+    cursor: pointer;
+    border-style: none;
+  }
+}
+

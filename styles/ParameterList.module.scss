@@ -1,0 +1,88 @@
+@import "variables";
+
+.parameter_list{
+  display: grid;
+  width: $desktop_width;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  gap: 20px;
+
+  .titles{
+    grid-column: 1 / 6;
+    display: grid;
+    grid-template-columns: inherit;
+    gap: inherit;
+
+    .title{
+
+    }
+
+  }
+
+  .list{
+    grid-column: 1 / 6;
+    gap: 10px;
+    display: grid;
+  }
+
+  .form{
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+    gap: 20px;
+
+    .form_description{
+      grid-column: 3 / 5;
+    }
+
+    .form_button{
+      background: linear-gradient(45deg, rgba(71,158,230,1) 0%, rgba(109,235,200,1) 100%);
+      color: white;
+      outline-style: none;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 0;
+      cursor: pointer;
+      width: 90px;
+    }
+  }
+}
+
+@media(max-width: $desktop_width) {
+
+  .parameter_list{
+    width: $laptop_width;
+  }
+}
+
+@media(max-width: $laptop_width) {
+
+  .parameter_list{
+    width: $tablet_width;
+  }
+}
+
+@media(max-width: $tablet_width) {
+
+  .parameter_list{
+    width: $mobile_width;
+
+    .titles{
+      display: none;
+    }
+
+    .form{
+      grid-template-columns: unset;
+      border: 1px solid $main_text_color;
+      gap: 10px;
+      border-radius: 8px;
+      padding: 5px 10px;
+
+      .input{
+        height: 40px;
+      }
+
+      .form_description{
+        grid-column: unset;
+      }
+    }
+  }
+}
