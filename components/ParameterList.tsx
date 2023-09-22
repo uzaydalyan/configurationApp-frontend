@@ -36,7 +36,6 @@ const ParameterList = ({loadingCallback} : {loadingCallback: (isLoading : boolea
                         }
                     }).then(response => {
                         let parameters : ParameterModel[] = []
-                        console.log(response.data)
                         response.data.parameterList.forEach( (parameter: { id: string, parameter_key: string; value: string; create_date: string; description: string; }) => parameters.push({
                             id: parameter.id,
                             parameter_key: parameter.parameter_key,

@@ -6,6 +6,7 @@ import {auth} from '../firebase';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useRouter} from "next/router";
 import TextInput from "../components/TextInput";
+import Head from "next/head";
 
 
 export default function Login() {
@@ -33,6 +34,11 @@ export default function Login() {
 
     return(
         <div className="content">
+            <Head>
+                <title>Sign In</title>
+                <meta name="description" content="Configuration app" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className={styles.main}>
                 <Image src={Icon} alt={"icon"} width={300} />
                 <div className={styles.signintext}>Please sign in</div>
