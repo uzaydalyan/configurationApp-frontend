@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {auth} from '../firebase';
 import axios from 'axios';
 import moment from "moment";
+import ConfigurationSettingsService from "../services/ConfigurationSettingsService";
 
 const Parameter = ({parameter, deleteParameter, refreshParameterList, loadingCallback}: { parameter: ParameterModel, deleteParameter: (id: string) => void, refreshParameterList : () => void, loadingCallback : (isLoading: boolean) => void}) => {
 
@@ -35,12 +36,7 @@ const Parameter = ({parameter, deleteParameter, refreshParameterList, loadingCal
             };
 
             auth.currentUser?.getIdToken().then(token => {
-                axios.post('http://localhost:4000/configurationSettings/updateParameter', data, {
-                    headers:{
-                        "Content-Type": "application/json",
-                        "Authorization": `${token}`
-                    }
-                }).then(response => {
+                ConfigurationSettingsService.updateParameter(token, data.id, data.parameter).then(response => {
                     refreshParameterList();
                     setEditModeOpen(false);
                 }).catch((e) => {

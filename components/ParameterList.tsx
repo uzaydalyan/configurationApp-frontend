@@ -8,10 +8,10 @@ import {auth} from '../firebase';
 import ParameterModel from '../model/ParameterModel'
 import TextInput from "./TextInput";
 import LoadingSpinner from "./LoadingSpinner";
+import ConfigurationSettingsService from "../services/ConfigurationSettingsService";
 
-const ParameterList = ({loadingCallback} : {loadingCallback: (isLoading : boolean) => void}) => {
+const ParameterList = ({loadingCallback}: { loadingCallback: (isLoading: boolean) => void }) => {
 
-    const form = useRef<HTMLFormElement>(null);
     const [newParameterKey, setNewParameterKey] = useState("");
     const [newValue, setNewValue] = useState("");
     const [newDescription, setNewDescription] = useState("");
@@ -20,52 +20,49 @@ const ParameterList = ({loadingCallback} : {loadingCallback: (isLoading : boolea
     const fetchParameters = () => {
         loadingCallback(true)
         setParameterList([]);
-        if(form.current){
-            form.current.reset();
-            setNewValue("")
-            setNewDescription("")
-            setNewParameterKey("")
-        }
-        auth.onAuthStateChanged(user => {
-            if(user){
-                user.getIdToken().then(token => {
-                    axios.get('http://localhost:4000/configurationSettings/getAllParameters', {
-                        headers:{
-                            "Content-Type": "application/json",
-                            "Authorization": `${token}`
-                        }
-                    }).then(response => {
-                        let parameters : ParameterModel[] = []
-                        response.data.parameterList.forEach( (parameter: { id: string, parameter_key: string; value: string; create_date: string; description: string; }) => parameters.push({
-                            id: parameter.id,
-                            parameter_key: parameter.parameter_key,
-                            value: parameter.value,
-                            create_date: parameter.create_date,
-                            description: parameter.description
-                        }))
-                        setParameterList(parameters)
-                        loadingCallback(false)
 
-                    }).catch((e) => {
-                        alert(e)
-                        loadingCallback(false)
-                    })
-                }).catch((e) => {
-                    alert(e)
-                    loadingCallback(false)
-                })
-            }
+        auth.currentUser?.getIdToken().then(token => {
+            ConfigurationSettingsService.getAllParameters(token).then(response => {
+                let parameters: ParameterModel[] = []
+                response.data.parameterList.forEach((parameter: {
+                    id: string,
+                    parameter_key: string;
+                    value: string;
+                    create_date: string;
+                    description: string;
+                }) => parameters.push({
+                    id: parameter.id,
+                    parameter_key: parameter.parameter_key,
+                    value: parameter.value,
+                    create_date: parameter.create_date,
+                    description: parameter.description
+                }))
+                setParameterList(parameters)
+                loadingCallback(false)
+
+            }).catch((e) => {
+                alert(e)
+                loadingCallback(false)
+            })
+        }).catch((e) => {
+            alert(e)
+            loadingCallback(false)
         })
     }
 
     useEffect(() => {
-        fetchParameters();
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                fetchParameters();
+            }
+        })
+
     }, []);
 
 
     const handleSubmit = () => {
 
-        if(newParameterKey && newValue && newDescription){
+        if (newParameterKey && newValue && newDescription) {
             loadingCallback(true)
             let date_create = moment().format("DD/MM/YYYY hh:mm")
 
@@ -76,14 +73,11 @@ const ParameterList = ({loadingCallback} : {loadingCallback: (isLoading : boolea
                 create_date: date_create
             };
 
-
             auth.currentUser?.getIdToken().then(token => {
-                axios.post('http://localhost:4000/configurationSettings/addParameter', data, {
-                    headers:{
-                        "Content-Type": "application/json",
-                        "Authorization": `${token}`
-                    }
-                }).then(response => {
+                ConfigurationSettingsService.createParameter(token, data).then(response => {
+                    setNewValue("")
+                    setNewDescription("")
+                    setNewParameterKey("")
                     fetchParameters();
                 }).catch((e) => {
                     alert(e)
@@ -96,16 +90,11 @@ const ParameterList = ({loadingCallback} : {loadingCallback: (isLoading : boolea
         }
     }
 
-    const deleteParameter = (id : string) => {
+    const deleteParameter = (id: string) => {
         loadingCallback(true)
         auth.currentUser?.getIdToken()
             .then(token => {
-                axios.post('http://localhost:4000/configurationSettings/deleteParameter', {"id": id},{
-                    headers:{
-                        "Content-Type": "application/json",
-                        "Authorization": `${token}`
-                    }
-                }).then(response => {
+                ConfigurationSettingsService.deleteParameter(token, id).then(response => {
                     fetchParameters()
                     loadingCallback(false)
                 }).catch(e => {
@@ -116,26 +105,32 @@ const ParameterList = ({loadingCallback} : {loadingCallback: (isLoading : boolea
     }
 
 
-    return(
-      <div className={styles.parameter_list}>
-        <div className={styles.titles}>
-            <div className={'title_font ' + styles.title}>Parameter Key</div>
-            <div className={'title_font ' + styles.title}>Value</div>
-            <div className={'title_font ' + styles.title}>Description</div>
-            <div className={'title_font ' + styles.title}>Create Date</div>
+    return (
+        <div className={styles.parameter_list}>
+            <div className={styles.titles}>
+                <div className={'title_font ' + styles.title}>Parameter Key</div>
+                <div className={'title_font ' + styles.title}>Value</div>
+                <div className={'title_font ' + styles.title}>Description</div>
+                <div className={'title_font ' + styles.title}>Create Date</div>
+            </div>
+
+            <div className={styles.list}>
+                {parameterList.map((parameter, i) => <Parameter deleteParameter={deleteParameter} key={i.toString()}
+                                                                parameter={parameter}
+                                                                refreshParameterList={fetchParameters}
+                                                                loadingCallback={loadingCallback}/>)}
+
+                <div className={styles.form}>
+                    <TextInput className={styles.input} value={newParameterKey} onChangeCallback={e => setNewParameterKey(e)} type="text"
+                               placeholder="New Parameter"/>
+                    <TextInput className={styles.input} value={newValue} onChangeCallback={e => setNewValue(e)} type="text"
+                               placeholder="New Value"/>
+                    <TextInput className={styles.input + " " + styles.form_description} value={newDescription}
+                               onChangeCallback={e => setNewDescription(e)} type="text" placeholder="New Description"/>
+                    <button className={styles.form_button} onClick={handleSubmit}>ADD</button>
+                </div>
+            </div>
         </div>
-
-          <div className={styles.list}>
-              {parameterList.map((parameter, i) => <Parameter deleteParameter={deleteParameter} key={i.toString()} parameter={parameter} refreshParameterList={fetchParameters} loadingCallback={loadingCallback}/>)}
-
-              <form className={styles.form} ref={form}>
-                  <TextInput className={styles.input} onChangeCallback={e => setNewParameterKey(e)} type="text" placeholder="New Parameter"/>
-                  <TextInput className={styles.input} onChangeCallback={e => setNewValue(e)}  type="text" placeholder="New Value" />
-                  <TextInput className={styles.input + " " + styles.form_description} onChangeCallback={e => setNewDescription(e)}  type="text" placeholder="New Description" />
-                  <button className={styles.form_button} onClick={handleSubmit} >ADD</button>
-              </form>
-          </div>
-      </div>
     );
 }
 
