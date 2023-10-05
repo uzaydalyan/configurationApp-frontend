@@ -34,6 +34,12 @@ To run this project you will need to add the following environment variables to 
 `NEXT_PUBLIC_API_URL`
 
 
+## Screenshots
+
+<img src="https://github.com/uzaydalyan/configurationApp-frontend/blob/main/screenshots/conf_home_mobile.png"  >
+<img src="https://github.com/uzaydalyan/configurationApp-frontend/blob/main/screenshots/configuration_home.png"  >
+<img src="https://github.com/uzaydalyan/configurationApp-frontend/blob/main/screenshots/conf_login.png"  >
+
 
 
 
